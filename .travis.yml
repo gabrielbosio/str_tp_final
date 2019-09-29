@@ -3,7 +3,7 @@ language: ruby
 rvm:
  - 2.5.1
 
- install:
+install:
  - gem install bundler -v 1.17.3
 
 script: "./build_all.sh"
