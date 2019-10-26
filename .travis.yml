@@ -9,4 +9,6 @@ install:
 gemfile:
   - ./simulador/Gemfile
 
+before_script: cd simulador
+
 script: "./simulador/build_all.sh"
