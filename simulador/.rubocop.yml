@@ -14,6 +14,8 @@ Style/FrozenStringLiteralComment:
   EnforcedStyle: never
 Style/Documentation:
   Exclude: ['**/*']
+Style/ClassVars:
+  Enabled: false
 RSpec/AnyInstance:
   Enabled: false
 RSpec/ExampleWording:
