@@ -7,6 +7,6 @@ install:
  - gem install bundler -v 1.17.3
 
 gemfile:
-  - simulador/Gemfile
+  - ./simulador/Gemfile
 
 script: "./simulador/build_all.sh"
