@@ -6,4 +6,8 @@ class Tarea
     @nombre = nombre
     @tiempo_de_computo = tiempo_de_computo
   end
+
+  def ejecutar
+    Simulacion.registrar_ejecucion(@nombre, @tiempo_de_computo)
+  end
 end
