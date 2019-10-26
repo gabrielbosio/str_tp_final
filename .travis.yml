@@ -6,9 +6,7 @@ rvm:
 install:
  - gem install bundler -v 1.17.3
 
-gemfile:
-  - ./simulador/Gemfile
-
+before_install: cd simulador
 before_script: cd simulador
 
-script: "./simulador/build_all.sh"
+script: "./build_all.sh"
