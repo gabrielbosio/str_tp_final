@@ -8,4 +8,9 @@ class Procesador
   def asignar_tarea(tarea)
     @tareas_a_ejecutar << tarea
   end
+
+  def ejecutar
+    @tareas_a_ejecutar.each(&:ejecutar)
+    @tareas_a_ejecutar = []
+  end
 end
