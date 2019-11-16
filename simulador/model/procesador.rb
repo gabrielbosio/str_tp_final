@@ -1,16 +1,16 @@
 class Procesador
-  attr_reader :tareas_a_ejecutar
+  attr_reader :instancias_a_ejecutar
 
   def initialize
-    @tareas_a_ejecutar = []
+    @instancias_a_ejecutar = []
   end
 
-  def asignar_tarea(tarea)
-    @tareas_a_ejecutar << tarea
+  def asignar_instancia(instancia)
+    @instancias_a_ejecutar << instancia
   end
 
   def ejecutar
-    @tareas_a_ejecutar.each(&:ejecutar)
-    @tareas_a_ejecutar = []
+    @instancias_a_ejecutar.each(&:ejecutar)
+    @instancias_a_ejecutar = []
   end
 end
