@@ -1,5 +1,4 @@
 class InstanciaTarea
-  
   attr_reader :nombre, :instancia, :tiempo_de_computo
 
   def initialize(nombre, instancia, tiempo_de_computo)

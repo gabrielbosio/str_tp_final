@@ -11,4 +11,4 @@ t3 = Tarea.new('t3', 1, 4)
 scheduler = Scheduler.new([t1, t2, t3])
 
 scheduler.planificar.each { |instancia| puts instancia.nombre }
-puts "Termine"
+puts 'Termine'
