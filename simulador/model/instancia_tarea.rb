@@ -1,13 +1,14 @@
 class InstanciaTarea
-  attr_reader :nombre, :instancia, :tiempo_de_computo
+  attr_reader :nombre, :instancia, :tiempo_inicial, :tiempo_final
 
-  def initialize(nombre, instancia, tiempo_de_computo)
+  def initialize(nombre, instancia, tiempo_inicial, tiempo_final)
     @nombre = nombre
     @instancia = instancia
-    @tiempo_de_computo = tiempo_de_computo
+    @tiempo_inicial = tiempo_inicial
+    @tiempo_final = tiempo_final
   end
 
   def ejecutar
-    Simulacion.registrar_ejecucion(@nombre, @tiempo_de_computo)
+    Simulacion.registrar_ejecucion(@nombre, @tiempo_inicial, @tiempo_final)
   end
 end
