@@ -9,6 +9,6 @@ class InstanciaTarea
   end
 
   def ejecutar
-    Simulacion.registrar_ejecucion(@nombre, @tiempo_inicial, @tiempo_final)
+    Simulacion.instance.registrar_ejecucion(@nombre, @tiempo_inicial, @tiempo_final)
   end
 end

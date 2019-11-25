@@ -2,7 +2,7 @@ require 'rspec'
 require_relative '../model/procesador'
 
 describe Procesador do
-  after(:each) { Simulacion.limpiar_log }
+  after(:each) { Simulacion.instance.limpiar_log }
 
   let(:procesador) { described_class.new }
   let(:instancia_1) do

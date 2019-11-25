@@ -2,7 +2,7 @@ require 'rspec'
 require_relative '../model/instancia_tarea'
 
 describe InstanciaTarea do
-  after(:each) { Simulacion.limpiar_log }
+  after(:each) { Simulacion.instance.limpiar_log }
 
   let(:tiempo_inicial) { 0 }
   let(:tiempo_final) { 10 }
@@ -12,7 +12,7 @@ describe InstanciaTarea do
 
   describe 'ejecutar' do
     it 'debe llamar a registrar_ejecucion de Simulacion' do
-      expect(Simulacion).to receive(:registrar_ejecucion)
+      expect(Simulacion.instance).to receive(:registrar_ejecucion)
       instancia_t1.ejecutar
     end
   end
