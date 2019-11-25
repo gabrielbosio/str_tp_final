@@ -24,8 +24,8 @@ class Scheduler
 
       sondear_tareas(tiempo_actual, tareas_planificadas, tareas_no_planificadas)
 
+      decrementar_tiempo_hasta_deadline_tareas(tiempo_actual)
       tiempo_actual += 1
-      decrementar_tiempo_hasta_deadline_tareas
 
     end
     PlanDeEjecucion.new(tareas_planificadas, tareas_no_planificadas)
@@ -44,8 +44,10 @@ class Scheduler
 
   def sondear_tareas(tiempo_actual, tareas_planificadas, tareas_no_planificadas)
     @tareas.each do |tarea|
-      registrar_si_tarea_pudo_planificarse(tarea, tiempo_actual, tareas_planificadas)
-      registrar_si_tarea_no_pudo_planificarse(tarea, tiempo_actual, tareas_no_planificadas)
+      if tiempo_actual >= tarea.tiempo_de_inicio
+        registrar_si_tarea_pudo_planificarse(tarea, tiempo_actual, tareas_planificadas)
+        registrar_si_tarea_no_pudo_planificarse(tarea, tiempo_actual, tareas_no_planificadas)
+      end
     end
   end
 
@@ -68,7 +70,9 @@ class Scheduler
     end
   end
 
-  def decrementar_tiempo_hasta_deadline_tareas
-    @tareas.each { |tarea| tarea.decrementar_tiempo_hasta_deadline(1) }
+  def decrementar_tiempo_hasta_deadline_tareas(tiempo_actual)
+    @tareas.each do |tarea|
+      tarea.decrementar_tiempo_hasta_deadline(1) if tiempo_actual >= tarea.tiempo_de_inicio
+    end
   end
 end

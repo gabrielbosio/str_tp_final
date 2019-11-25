@@ -3,9 +3,10 @@ require_relative 'instancia_tarea'
 class Tarea
   attr_accessor :fue_planificada
   attr_reader :nombre
-  attr_reader :tiempo_de_computo, :tiempo_hasta_deadline, :periodo, :tiempo_de_computo_restante
+  attr_reader :tiempo_de_computo, :tiempo_hasta_deadline, :periodo, :tiempo_de_computo_restante,
+              :tiempo_de_inicio
 
-  def initialize(nombre, tiempo_de_computo, periodo)
+  def initialize(nombre, tiempo_de_computo, periodo, tiempo_de_inicio = 0)
     @nombre = nombre
     @tiempo_de_computo = tiempo_de_computo
     @periodo = periodo
@@ -13,6 +14,7 @@ class Tarea
     @tiempo_de_computo_restante = tiempo_de_computo
     @instancia = 0
     @fue_planificada = false
+    @tiempo_de_inicio = tiempo_de_inicio
   end
 
   def crear_instancia(tiempo_actual)
@@ -33,7 +35,7 @@ class Tarea
   end
 
   def periodo_actual(tiempo_actual)
-    (tiempo_actual / @periodo).floor + 1
+    @tiempo_de_inicio + (tiempo_actual / @periodo).floor + 1
   end
 
   private
