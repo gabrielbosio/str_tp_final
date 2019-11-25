@@ -12,22 +12,12 @@ class Tarea
     @tiempo_hasta_deadline = periodo
     @tiempo_de_computo_restante = tiempo_de_computo
     @instancia = 0
-    @instancias_por_periodo = {}
     @fue_planificada = false
-  end
-
-  def tiene_tiempo_para_ejecutarse?(tiempo_actual)
-    (tiempo_actual + @tiempo_de_computo) <= (@periodo * periodo_actual(tiempo_actual))
-  end
-
-  def lista_para_ejecutarse?(tiempo_actual)
-    !@instancias_por_periodo.key?(periodo_actual(tiempo_actual))
   end
 
   def crear_instancia(tiempo_actual)
     tiempo_final = tiempo_actual + @tiempo_de_computo
     nueva_instancia = InstanciaTarea.new(@nombre, @instancia, tiempo_actual, tiempo_final)
-    @instancias_por_periodo[periodo_actual(tiempo_actual)] = @instancia
     @instancia += 1
 
     nueva_instancia
