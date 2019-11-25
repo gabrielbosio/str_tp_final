@@ -21,9 +21,9 @@ class Scheduler
 
       @tarea_en_planificacion&.decrementar_tiempo_de_computo_restante(1)
       @tarea_en_planificacion = nil if @tarea_en_planificacion&.tiempo_de_computo_restante&.zero?
-      
+
       sondear_tareas(tiempo_actual, tareas_planificadas, tareas_no_planificadas)
-      
+
       tiempo_actual += 1
       @tareas.each { |tarea| tarea.decrementar_tiempo_hasta_deadline(1) }
     end
@@ -40,15 +40,11 @@ class Scheduler
   end
 
   private
+
   def sondear_tareas(tiempo_actual, tareas_planificadas, tareas_no_planificadas)
     @tareas.each do |tarea|
       registrar_si_tarea_pudo_planificarse(tarea, tiempo_actual, tareas_planificadas)
-
-      next unless tarea.tiempo_de_computo_restante >= tarea.tiempo_hasta_deadline &&
-                  !tarea.fue_planificada &&
-                  !tareas_no_planificadas[tarea.nombre].key?(tarea.periodo_actual(tiempo_actual))
-
-      tareas_no_planificadas[tarea.nombre][tarea.periodo_actual(tiempo_actual)] = tiempo_actual
+      registrar_si_tarea_no_pudo_planificarse(tarea, tiempo_actual, tareas_no_planificadas)
     end
   end
 
@@ -60,6 +56,14 @@ class Scheduler
       tareas_planificadas << instancia_tarea
       tarea.fue_planificada = true
       @tarea_en_planificacion = tarea
+    end
+  end
+
+  def registrar_si_tarea_no_pudo_planificarse(tarea, tiempo_actual, tareas_no_planificadas)
+    if tarea.tiempo_de_computo_restante >= tarea.tiempo_hasta_deadline &&
+       !tarea.fue_planificada &&
+       !tareas_no_planificadas[tarea.nombre].key?(tarea.periodo_actual(tiempo_actual))
+      tareas_no_planificadas[tarea.nombre][tarea.periodo_actual(tiempo_actual)] = tiempo_actual
     end
   end
 end
