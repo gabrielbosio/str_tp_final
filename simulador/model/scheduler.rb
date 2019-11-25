@@ -25,7 +25,8 @@ class Scheduler
       sondear_tareas(tiempo_actual, tareas_planificadas, tareas_no_planificadas)
 
       tiempo_actual += 1
-      @tareas.each { |tarea| tarea.decrementar_tiempo_hasta_deadline(1) }
+      decrementar_tiempo_hasta_deadline_tareas
+
     end
     PlanDeEjecucion.new(tareas_planificadas, tareas_no_planificadas)
   end
@@ -65,5 +66,9 @@ class Scheduler
        !tareas_no_planificadas[tarea.nombre].key?(tarea.periodo_actual(tiempo_actual))
       tareas_no_planificadas[tarea.nombre][tarea.periodo_actual(tiempo_actual)] = tiempo_actual
     end
+  end
+
+  def decrementar_tiempo_hasta_deadline_tareas
+    @tareas.each { |tarea| tarea.decrementar_tiempo_hasta_deadline(1) }
   end
 end
