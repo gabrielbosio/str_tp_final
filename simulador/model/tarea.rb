@@ -35,7 +35,7 @@ class Tarea
 
   def decrementar_tiempo_hasta_deadline(tiempo)
     @tiempo_hasta_deadline -= tiempo
-    reiniciar_tarea if @tiempo_hasta_deadline.zero?
+    reiniciar if @tiempo_hasta_deadline.zero?
   end
 
   def decrementar_tiempo_de_computo_restante(tiempo)
@@ -46,7 +46,9 @@ class Tarea
     (tiempo_actual / @periodo).floor + 1
   end
 
-  def reiniciar_tarea
+  private
+
+  def reiniciar
     @tiempo_hasta_deadline = @periodo
     @tiempo_de_computo_restante = @tiempo_de_computo
     @fue_planificada = false
