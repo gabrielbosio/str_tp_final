@@ -20,7 +20,10 @@ class Scheduler
     while tiempo_actual < hiperperiodo
 
       @tarea_en_planificacion&.decrementar_tiempo_de_computo_restante(1)
-      @tarea_en_planificacion = nil if @tarea_en_planificacion&.tiempo_de_computo_restante&.zero?
+      if @tarea_en_planificacion&.tiempo_de_computo_restante&.zero?
+        @tarea_en_planificacion.reiniciar_tiempo_de_computo_restante
+        @tarea_en_planificacion = nil 
+      end
 
       sondear_tareas(tiempo_actual, tareas_planificadas, tareas_no_planificadas)
 

@@ -38,6 +38,10 @@ class Tarea
     ((tiempo_actual - @tiempo_de_inicio) / @periodo).floor + 1
   end
 
+  def reiniciar_tiempo_de_computo_restante
+    @tiempo_de_computo_restante = @tiempo_de_computo
+  end
+
   private
 
   def reiniciar
