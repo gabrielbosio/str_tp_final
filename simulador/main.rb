@@ -6,7 +6,7 @@ require_relative 'model/tarea'
 
 t1 = Tarea.new('t1', 3, 5, 2)
 t2 = Tarea.new('t2', 2, 8)
-# t3 = Tarea.new('t3', 1, 4)
+t3 = Tarea.new('t3', 1, 4)
 
 # t1 = Tarea.new('t1', 1, 2)
 # t2 = Tarea.new('t2', 2, 3)
@@ -14,5 +14,5 @@ t2 = Tarea.new('t2', 2, 8)
 
 ruta_log = './log.txt'
 
-Simulacion.instance.ejecutar([t1, t2], ruta_log)
+Simulacion.instance.ejecutar([t1, t2, t3], ruta_log)
 puts Simulacion.instance.log

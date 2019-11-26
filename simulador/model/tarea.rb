@@ -35,7 +35,7 @@ class Tarea
   end
 
   def periodo_actual(tiempo_actual)
-    @tiempo_de_inicio + (tiempo_actual / @periodo).floor + 1
+    ((tiempo_actual - @tiempo_de_inicio) / @periodo).floor + 1
   end
 
   private
