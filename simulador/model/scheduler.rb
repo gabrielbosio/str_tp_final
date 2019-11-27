@@ -1,3 +1,5 @@
+require_relative './plan_de_ejecucion'
+
 class Scheduler
   attr_reader :tareas
 
@@ -7,33 +9,26 @@ class Scheduler
 
   def planificar
     tareas_planificadas = []
-    indice_tarea_actual = 0
+    tareas_no_planificadas = {}
     hiperperiodo = calcular_hiperperiodo
     tiempo_actual = 0
-    cantidad_tareas_evaluadas = 0
+
+    @tareas.each { |tarea| tareas_no_planificadas[tarea.nombre] = {} }
+
+    @tarea_en_planificacion = nil
 
     while tiempo_actual < hiperperiodo
-      tarea_actual = tareas[indice_tarea_actual]
 
-      if tarea_actual.lista_para_ejecutarse?(tiempo_actual) &&
-         tarea_actual.tiene_tiempo_para_ejecutarse?(tiempo_actual)
-        instancia_tarea = tarea_actual.crear_instancia(tiempo_actual)
-        tareas_planificadas << instancia_tarea
-        tiempo_actual += tarea_actual.tiempo_de_computo
-        cantidad_tareas_evaluadas = 0
+      @tarea_en_planificacion&.decrementar_tiempo_de_computo_restante(1)
+      @tarea_en_planificacion = nil if @tarea_en_planificacion&.tiempo_de_computo_restante&.zero?
 
-      else
-        cantidad_tareas_evaluadas += 1
-      end
+      sondear_tareas(tiempo_actual, tareas_planificadas, tareas_no_planificadas)
 
-      indice_tarea_actual = (indice_tarea_actual + 1) % @tareas.size
+      tiempo_actual += 1
+      decrementar_tiempo_hasta_deadline_tareas
 
-      if cantidad_tareas_evaluadas == @tareas.size
-        tiempo_actual += 1
-        cantidad_tareas_evaluadas = 0
-      end
     end
-    tareas_planificadas
+    PlanDeEjecucion.new(tareas_planificadas, tareas_no_planificadas)
   end
 
   def calcular_hiperperiodo
@@ -43,5 +38,37 @@ class Scheduler
     end
 
     periodos.reduce(:lcm)
+  end
+
+  private
+
+  def sondear_tareas(tiempo_actual, tareas_planificadas, tareas_no_planificadas)
+    @tareas.each do |tarea|
+      registrar_si_tarea_pudo_planificarse(tarea, tiempo_actual, tareas_planificadas)
+      registrar_si_tarea_no_pudo_planificarse(tarea, tiempo_actual, tareas_no_planificadas)
+    end
+  end
+
+  def registrar_si_tarea_pudo_planificarse(tarea, tiempo_actual, tareas_planificadas)
+    if tarea.tiempo_de_computo_restante <= tarea.tiempo_hasta_deadline &&
+       !tarea.fue_planificada && @tarea_en_planificacion.nil?
+
+      instancia_tarea = tarea.crear_instancia(tiempo_actual)
+      tareas_planificadas << instancia_tarea
+      tarea.fue_planificada = true
+      @tarea_en_planificacion = tarea
+    end
+  end
+
+  def registrar_si_tarea_no_pudo_planificarse(tarea, tiempo_actual, tareas_no_planificadas)
+    if tarea.tiempo_de_computo_restante >= tarea.tiempo_hasta_deadline &&
+       !tarea.fue_planificada &&
+       !tareas_no_planificadas[tarea.nombre].key?(tarea.periodo_actual(tiempo_actual))
+      tareas_no_planificadas[tarea.nombre][tarea.periodo_actual(tiempo_actual)] = tiempo_actual
+    end
+  end
+
+  def decrementar_tiempo_hasta_deadline_tareas
+    @tareas.each { |tarea| tarea.decrementar_tiempo_hasta_deadline(1) }
   end
 end

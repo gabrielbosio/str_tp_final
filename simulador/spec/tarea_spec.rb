@@ -2,7 +2,7 @@ require 'rspec'
 require_relative '../model/tarea'
 
 describe Tarea do
-  after(:each) { Simulacion.limpiar_ejecuciones }
+  after(:each) { Simulacion.instance.limpiar_log }
 
   let(:tiempo_de_computo) { 10 }
   let(:nombre) { 'Tarea1' }

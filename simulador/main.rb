@@ -8,7 +8,11 @@ t1 = Tarea.new('t1', 3, 5)
 t2 = Tarea.new('t2', 2, 8)
 t3 = Tarea.new('t3', 1, 4)
 
-scheduler = Scheduler.new([t1, t2, t3])
+# t1 = Tarea.new('t1', 1, 2)
+# t2 = Tarea.new('t2', 2, 3)
+# t3 = Tarea.new('t3', 2, 3)
 
-scheduler.planificar.each { |instancia| puts instancia.nombre }
-puts 'Termine'
+ruta_log = './log.txt'
+
+Simulacion.instance.ejecutar([t1, t2, t3], ruta_log)
+puts Simulacion.instance.log
