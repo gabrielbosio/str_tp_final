@@ -89,10 +89,7 @@ static int32_t fd_out;
 static int32_t buttons_fd;
 static int32_t N = 1;
 
-static uint8_t boton1_presionado;
-static uint8_t boton2_presionado;
-static uint8_t boton3_presionado;
-static uint8_t boton4_presionado;
+
 static uint8_t button_1_pressed = 0;
 static uint8_t button_4_pressed = 0;
 /*==================[external data definition]===============================*/
@@ -187,24 +184,12 @@ TASK(T1)
 {
    uint8_t outputs = 0x0;
    ciaaPOSIX_read(fd_out, &outputs, 1);
-   /* write blinking message */
    printf("Task1 => N = %d\n", N);
-   /* blink output */
-   //ciaaPOSIX_read(fd_out, &outputs, 1);
-   //(void)ciaaPOSIX_read(buttons_fd, &inputs, 1);
-   /* inverse button logic */
-   // inputs = ~inputs;
-   // /* detect a change on buttons state */
-   // button_pressed = (~inputs_old) & (inputs);
 
-    //if(boton1_presionado){
    outputs ^= RGB_BLUE_LED;
 
    ciaaPOSIX_write(fd_out, &outputs, 1);
 
-   // inputs_old = inputs;
-
-   /* terminate task */
    TerminateTask();
 }
 
