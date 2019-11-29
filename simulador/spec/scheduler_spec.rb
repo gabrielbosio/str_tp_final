@@ -34,5 +34,14 @@ describe Scheduler do
         expect(instancias_planificadas[i].nombre).to eq(instancias_planificadas_esperadas[i])
       end
     end
+
+    it 'planificacion con dos tareas t1(3,5,2) y t2(2,8) primeras 7 instancias' do
+      scheduler = described_class.new([tarea_1, tarea_2])
+      instancias_planificadas = scheduler.planificar.instancias_planificadas
+      instancias_planificadas_esperadas = %w[t2 t1 t1 t2 t1 t2 t1]
+      (0..6).each do |i|
+        expect(instancias_planificadas[i].nombre).to eq(instancias_planificadas_esperadas[i])
+      end
+    end
   end
 end
