@@ -53,5 +53,15 @@ describe Scheduler do
         expect(instancias_planificadas[i].nombre).to eq(instancias_planificadas_esperadas[i])
       end
     end
+
+    it 'planificacion con tareas t1(3,5,2), t2(2,8) y t3(1,4) deberia arrojar 6 fallas de t3' do
+      scheduler = described_class.new([tarea_1, tarea_2, tarea_3])
+      plan = scheduler.planificar
+      instancias_sin_ejecutar = plan.instancias_sin_ejecutar
+      periodos_sin_ejecutar = instancias_sin_ejecutar['t3'].keys
+      expect(instancias_sin_ejecutar['t1']).to be_empty
+      expect(instancias_sin_ejecutar['t2']).to be_empty
+      expect(periodos_sin_ejecutar).to eq [1, 3, 5, 7, 9, 10]
+    end
   end
 end
