@@ -20,12 +20,15 @@ class Scheduler
     while tiempo_actual < hiperperiodo
 
       @tarea_en_planificacion&.decrementar_tiempo_de_computo_restante(1)
-      @tarea_en_planificacion = nil if @tarea_en_planificacion&.tiempo_de_computo_restante&.zero?
+      if @tarea_en_planificacion&.tiempo_de_computo_restante&.zero?
+        @tarea_en_planificacion.reiniciar_tiempo_de_computo_restante
+        @tarea_en_planificacion = nil
+      end
 
       sondear_tareas(tiempo_actual, tareas_planificadas, tareas_no_planificadas)
 
+      decrementar_tiempo_hasta_deadline_tareas(tiempo_actual)
       tiempo_actual += 1
-      decrementar_tiempo_hasta_deadline_tareas
 
     end
     PlanDeEjecucion.new(tareas_planificadas, tareas_no_planificadas)
@@ -44,8 +47,10 @@ class Scheduler
 
   def sondear_tareas(tiempo_actual, tareas_planificadas, tareas_no_planificadas)
     @tareas.each do |tarea|
-      registrar_si_tarea_pudo_planificarse(tarea, tiempo_actual, tareas_planificadas)
-      registrar_si_tarea_no_pudo_planificarse(tarea, tiempo_actual, tareas_no_planificadas)
+      if tiempo_actual >= tarea.tiempo_de_inicio
+        registrar_si_tarea_pudo_planificarse(tarea, tiempo_actual, tareas_planificadas)
+        registrar_si_tarea_no_pudo_planificarse(tarea, tiempo_actual, tareas_no_planificadas)
+      end
     end
   end
 
@@ -68,7 +73,9 @@ class Scheduler
     end
   end
 
-  def decrementar_tiempo_hasta_deadline_tareas
-    @tareas.each { |tarea| tarea.decrementar_tiempo_hasta_deadline(1) }
+  def decrementar_tiempo_hasta_deadline_tareas(tiempo_actual)
+    @tareas.each do |tarea|
+      tarea.decrementar_tiempo_hasta_deadline(1) if tiempo_actual >= tarea.tiempo_de_inicio
+    end
   end
 end

@@ -4,7 +4,7 @@ require_relative 'model/scheduler'
 require_relative 'model/simulacion'
 require_relative 'model/tarea'
 
-t1 = Tarea.new('t1', 3, 5)
+t1 = Tarea.new('t1', 3, 5, 2)
 t2 = Tarea.new('t2', 2, 8)
 t3 = Tarea.new('t3', 1, 4)
 
